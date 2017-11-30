@@ -21,7 +21,9 @@ func Provider() *schema.Provider {
 				Description: "BelugaCDN password",
 			},
 		},
-		ResourcesMap:  map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"belugacdn_site": resource_belugacdn_site(),
+		},
 		ConfigureFunc: configureProvider,
 	}
 }
