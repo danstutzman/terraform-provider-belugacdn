@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/danielstutzman/go-belugacdn"
 	"github.com/hashicorp/terraform/helper/schema"
-	"strconv"
 )
 
 func resource_belugacdn_site() *schema.Resource {
@@ -72,12 +71,12 @@ func resource_belugacdn_site_create(d *schema.ResourceData, m interface{}) error
 	siteName := d.Get("name").(string)
 	input := convertDataToSiteConfiguration(d)
 
-	site, err := config.CreateSite(siteName, input)
+	_, err := config.CreateSite(siteName, input)
 	if err != nil {
 		return fmt.Errorf("Error from CreateSite: %s", err)
 	}
 
-	d.SetId(strconv.Itoa(site.DomainId))
+	d.SetId(siteName)
 
 	return err
 }
