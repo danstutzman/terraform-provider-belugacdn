@@ -23,6 +23,11 @@ func resource_belugacdn_site() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"hostnames": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+			},
 		},
 	}
 }
@@ -31,6 +36,15 @@ func convertDataToSiteConfiguration(d *schema.ResourceData) belugacdn.SiteConfig
 	input := belugacdn.SiteConfiguration{
 		Origin: d.Get("origin").(string),
 	}
+
+	if attr, ok := d.GetOk("hostnames"); ok {
+		hostnames := []string{}
+		for _, s := range attr.([]interface{}) {
+			hostnames = append(hostnames, s.(string))
+		}
+		input.Hostnames = hostnames
+	}
+
 	return input
 }
 
