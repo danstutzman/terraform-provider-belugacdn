@@ -32,6 +32,10 @@ func resource_belugacdn_site() *schema.Resource {
 				Optional: true,
 				Default:  false,
 			},
+			"cname": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -71,12 +75,13 @@ func resource_belugacdn_site_create(d *schema.ResourceData, m interface{}) error
 	siteName := d.Get("name").(string)
 	input := convertDataToSiteConfiguration(d)
 
-	_, err := config.CreateSite(siteName, input)
+	site, err := config.CreateSite(siteName, input)
 	if err != nil {
 		return fmt.Errorf("Error from CreateSite: %s", err)
 	}
 
 	d.SetId(siteName)
+	d.Set("cname", site.CName)
 
 	return err
 }
