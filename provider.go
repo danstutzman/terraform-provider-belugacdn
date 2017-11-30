@@ -22,7 +22,8 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"belugacdn_site": resource_belugacdn_site(),
+			"belugacdn_site":            resource_belugacdn_site(),
+			"belugacdn_ssl_certificate": resource_belugacdn_ssl_certificate(),
 		},
 		ConfigureFunc: configureProvider,
 	}
