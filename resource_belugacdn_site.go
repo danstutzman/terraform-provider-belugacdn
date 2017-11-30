@@ -28,6 +28,11 @@ func resource_belugacdn_site() *schema.Resource {
 				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
+			"redirect_http_to_https": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  false,
+			},
 		},
 	}
 }
@@ -35,6 +40,20 @@ func resource_belugacdn_site() *schema.Resource {
 func convertDataToSiteConfiguration(d *schema.ResourceData) belugacdn.SiteConfiguration {
 	input := belugacdn.SiteConfiguration{
 		Origin: d.Get("origin").(string),
+	}
+
+	if d.Get("redirect_http_to_https").(bool) {
+		input.Rules = []belugacdn.SiteRule{
+			{
+				Paths: []string{"/"},
+				Actions: []belugacdn.SiteAction{
+					{
+						Action: "canonicalizeScheme",
+						Scheme: "https",
+					},
+				},
+			},
+		}
 	}
 
 	if attr, ok := d.GetOk("hostnames"); ok {
