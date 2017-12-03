@@ -22,6 +22,10 @@ func resource_belugacdn_site() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"origin_port": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
 			"hostnames": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -42,7 +46,8 @@ func resource_belugacdn_site() *schema.Resource {
 
 func convertDataToSiteConfiguration(d *schema.ResourceData) belugacdn.SiteConfiguration {
 	input := belugacdn.SiteConfiguration{
-		Origin: d.Get("origin").(string),
+		Origin:     d.Get("origin").(string),
+		OriginPort: d.Get("origin_port").(int),
 	}
 
 	if d.Get("redirect_http_to_https").(bool) {
