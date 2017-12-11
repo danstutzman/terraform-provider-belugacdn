@@ -25,6 +25,7 @@ func resource_belugacdn_site() *schema.Resource {
 			"origin_port": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  80,
 			},
 			"hostnames": {
 				Type:     schema.TypeList,
